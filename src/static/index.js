@@ -4,5 +4,11 @@ var $ = jQuery = require( '../../node_modules/jquery/dist/jquery.js' );         
 require( '../../node_modules/bootstrap-sass/assets/javascripts/bootstrap.js' );   // <--- remove if Bootstrap's JS not needed 
 
 // inject bundled Elm app into div#main
-var Elm = require( '../elm/Main' );
-Elm.Main.embed( document.getElementById( 'main' ) );
+//var Elm = require( '../elm/Main' );
+//Elm.Main.embed( document.getElementById( 'main' ) );
+
+const Elm = require('../elm/Main');
+
+const root = document.getElementById('main');
+
+Elm.App.embed(root);

@@ -1,12 +1,12 @@
 {
-  "name": "elm-webpack-starter",
-  "description": "Webpack setup for writing Elm apps",
+  "name": "todomvcr",
+  "description": "My Todo Mvc Project",
   "version": "0.8.4",
   "license": "MIT",
-  "author": "Peter Morawiec",
+  "author": "John Chynoweth",
   "repository": { 
     "type": "git",
-    "url": "https://github.com/moarwick/elm-webpack-starter"
+    "url": "https://github.com/"
   },
   "scripts": {
     "start": "webpack-dev-server --hot --inline",

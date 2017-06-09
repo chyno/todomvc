@@ -1,63 +1,105 @@
-module Main exposing (..)
+module App exposing (..)
 import Html exposing (..)
+ 
 import Html.Attributes exposing (..)
-import Html.Events exposing ( onClick )
+import Html.Events exposing (..)
+import Html.Keyed as Keyed
+import Html.Lazy exposing (lazy, lazy2)
+import Json.Decode as Json
+import String
+import Task
+---- MODEL ----
 
--- component import example
-import Components.Hello exposing ( hello )
+-- The full application state of our todo app.
+type alias Model =
+    { entries : List Entry
+    , field : String
+    , uid : Int
+    , visibility : String
+    }
+
+type alias Entry =
+    { description : String
+    , completed : Bool
+    , editing : Bool
+    , id : Int
+    }
+
+emptyModel : Model
+emptyModel =
+    { entries = []
+    , visibility = "All"
+    , field = ""
+    , uid = 0
+    }
 
 
--- APP
-main : Program Never Int Msg
-main =
-  Html.beginnerProgram { model = model, view = view, update = update }
+newEntry : String -> Int -> Entry
+newEntry desc id =
+    { description = desc
+    , completed = False
+    , editing = False
+    , id = id
+    }
 
+init :  ( Model, Cmd Msg )
+init  =
+    (emptyModel, Cmd.none )
 
--- MODEL
-type alias Model = Int
+---- UPDATE ----
+type Msg
+    = NoOp |
+      Add |
+      UpdateField String
 
-model : number
-model = 0
-
-
--- UPDATE
-type Msg = NoOp | Increment
-
-update : Msg -> Model -> Model
+update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
   case msg of
-    NoOp -> model
-    Increment -> model + 1
+    NoOp ->
+       ( model, Cmd.none )
+    Add ->
+      { model
+                | uid = model.uid + 1
+                , field = ""
+                , entries =
+                    if String.isEmpty model.field then
+                      model.entries
+                    else
+                      model.entries ++ [ newEntry model.field model.uid ]
+      } ! []
+    UpdateField val ->
+      {model | field = val} ! []
+      
 
-
--- VIEW
--- Html is defined as: elem [ attribs ][ children ]
--- CSS can be applied via class names or inline style attrib
+---- VIEW ----
 view : Model -> Html Msg
 view model =
-  div [ class "container", style [("margin-top", "30px"), ( "text-align", "center" )] ][    -- inline CSS (literal)
-    div [ class "row" ][
-      div [ class "col-xs-12" ][
-        div [ class "jumbotron" ][
-          img [ src "static/img/elm.jpg", style styles.img ] []                             -- inline CSS (via var)
-          , hello model                                                                     -- ext 'hello' component (takes 'model' as arg)
-          , p [] [ text ( "Elm Webpack Starter For John" ) ]
-          , button [ class "btn btn-primary btn-lg", onClick Increment ] [                  -- click handler
-            span[ class "glyphicon glyphicon-star" ][]                                      -- glyphicon
-            , span[][ text "FTW!" ]
-          ]
-        ]
-      ]
-    ]
-  ]
+    div []
+        [ 
+         h1 [] [ text "Hello from Todo" ],
+         ul [] (List.map todoitemview model.entries),
+         input
+            [ 
+             placeholder "What needs to be done?"
+            , autofocus True
+            , value model.field
+            , name "newTodo"
+            , onInput UpdateField
+            ]
+         [],
+         button [onClick Add] [text "Add"],
+         div[][text "footer"]]
+        
+todoitemview : Entry -> Html msg
+todoitemview entry =
+  li [][text entry.description]
 
-
--- CSS STYLES
-styles : { img : List ( String, String ) }
-styles =
-  {
-    img =
-      [ ( "width", "33%" )
-      , ( "border", "4px solid #337AB7")
-      ]
-  }
+---- PROGRAM ----
+main : Program Never  Model Msg
+main =
+    Html.program
+        { init = init
+        , view = view
+        , update = update
+        , subscriptions = \_ -> Sub.none
+        }
