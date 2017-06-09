@@ -50,7 +50,8 @@ init  =
 type Msg
     = NoOp |
       Add |
-      UpdateField String
+      UpdateField String |
+      Remove Int
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
@@ -69,6 +70,10 @@ update msg model =
       } ! []
     UpdateField val ->
       {model | field = val} ! []
+    Remove id -> 
+     { model |  entries = (List.filter (\itm -> itm.id /= id) model.entries) 
+                    
+      } ! []
       
 
 ---- VIEW ----
@@ -90,9 +95,12 @@ view model =
          button [onClick Add] [text "Add"],
          div[][text "footer"]]
         
-todoitemview : Entry -> Html msg
+todoitemview : Entry -> Html Msg
 todoitemview entry =
-  li [][text entry.description]
+  li [][
+    div [] [text entry.description],
+    button [onClick (Remove entry.id)] [text "Delete"]
+  ]
 
 ---- PROGRAM ----
 main : Program Never  Model Msg
