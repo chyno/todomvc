@@ -1,4 +1,4 @@
-module App exposing (..)
+module Main exposing (..)
 import Html exposing (..)
 import View exposing (..)
 import Model exposing (..)

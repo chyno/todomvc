@@ -1,9 +1,7 @@
 
 module View  exposing(..)
 import Html exposing (..)
-import Material.Button as Button
-import Material.Scheme
-import Material.Options as Options exposing (css)
+
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import Html.Keyed as Keyed
