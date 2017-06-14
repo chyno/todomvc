@@ -2,7 +2,7 @@ module Main exposing (..)
 import Html exposing (..)
 import View exposing (..)
 import Model exposing (..)
-
+import Template exposing (..)
 ---- MODEL ----
       
 ---- PROGRAM ----
