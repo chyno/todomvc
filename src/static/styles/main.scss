@@ -1,5 +1,20 @@
-$icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
-@import '~bootstrap-sass/assets/stylesheets/bootstrap/_mixins.scss';
-@import '~bootstrap-sass/assets/stylesheets/_bootstrap.scss';
+ html, body {
+      height: 100%;
+    }
 
-// can add Boostrap overrides, additional Sass/CSS below...
+    .table-container {
+      display: table;
+      height: 100%;
+      width: 100%;
+    }
+    .table-block {
+      display: table-row;
+      height: 1px;
+    }
+    .footer-push {
+      height: auto;
+    }
+    #footer {
+      /* Placeholder footer styles */
+      text-align: center;
+    }

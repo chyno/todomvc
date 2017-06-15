@@ -12,7 +12,7 @@ view : Model -> Html Msg
 view model =
     div []
         [ 
-         h1 [] [ text "John Todo Application" ],
+
          ul [] (List.map todoitemview model.entries),
          input
             [ 
@@ -24,7 +24,7 @@ view model =
             ]
          [],
          button [class "button-primary", onClick Add] [text "Add"],
-         div[][text "fooFooter goes hereter"]]
+         div[][text "bottom of page"]]
         
 todoitemview : Entry -> Html Msg
 todoitemview entry =

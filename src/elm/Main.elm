@@ -10,7 +10,7 @@ main : Program Never  Model Msg
 main =
     Html.program
         { init = init
-        , view = view
+        , view = templateview
         , update = update
         , subscriptions = \_ -> Sub.none
         }
