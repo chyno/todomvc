@@ -19,7 +19,7 @@ templateview model =
           div 
           [class "row"]
           [
-            div
+            div 
             [class "one-half column", style [("margin-top", "10%")]]
              [
                view model
@@ -34,7 +34,7 @@ templateview model =
         [class "container"]
         [
             footer [id "footer", class "twelve columns"]
-            [text "footer text goes here"]
+            [text "Written by John Chynoweth"]
         ]
 
     ]

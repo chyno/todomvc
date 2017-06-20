@@ -37,16 +37,29 @@ newEntry desc id =
     , id = id
     }
 
-init :  ( Model, Cmd Msg )
-init  =
+init : Maybe Model -> ( Model, Cmd Msg )
+init savedModel =
+    Maybe.withDefault emptyModel savedModel ! []
+
+
+init2 :  ( Model, Cmd Msg )
+init2  =
     (emptyModel, Cmd.none )
 
 ---- UPDATE ----
 type Msg
     = NoOp |
       Add |
+      Remove |
       UpdateField String |
-      Remove Int
+      ToggleSelection (Int, Bool)
+
+toggleediting : Int -> Bool -> Entry -> Entry
+toggleediting id ised ent =
+  if ent.id == id then
+    {ent | editing =  ised}
+  else
+    ent
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
@@ -65,8 +78,12 @@ update msg model =
       } ! []
     UpdateField val ->
       {model | field = val} ! []
-    Remove id -> 
-     { model |  entries = (List.filter (\itm -> itm.id /= id) model.entries) 
+    Remove  -> 
+     { model |  entries = (List.filter (\itm -> itm.editing == False) model.entries) 
+                    
+      } ! []
+    ToggleSelection (id, isediting) ->
+      { model |  entries =  ( List.map (\itm -> (toggleediting id isediting itm)) model.entries)
                     
       } ! []
       
